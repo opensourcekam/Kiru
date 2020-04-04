@@ -176,14 +176,12 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 						<TextArea readOnly value={poem} rows={5} />
 					</Inputs>
 					<Buttons stretch={true}>
-						{/* <Button>
-							<FeatherIcon icon="copy" /> Copy
-						</Button> */}
 						<Button
 							secondary={true}
 							onClick={() => {
 								toastManager.add('Copied successfully', { appearance: 'success' });
 								copy(poem);
+								window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 							}}
 						>
 							<FeatherIcon icon="share" /> Copy
