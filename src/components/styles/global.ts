@@ -25,7 +25,7 @@ export const GlobalStyle =
         /* @import url('//fonts.googleapis.com/css?family=Poppins:300,400,700'); */
         /* BROKEN IN PRODUCTION FOR NOW */
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-        background-color: ${(props) => (!props.darkMode ? props.theme.colors.bgColor : props.theme.colors.primaryText)};
+        background-color: ${(props) => (!props.darkMode ? props.theme.colors.bgColor : props.theme.colors.jetBlack)};
         overflow-x: hidden;
         margin: 0;
     }

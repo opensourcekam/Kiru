@@ -13,7 +13,8 @@ const theme: DefaultTheme = {
 		disabledBg: '#E0E0E0',
 		disabledColor: '#9E9E9E',
 		weakerTxt: ' #253858',
-		cherry: '#ff3366'
+		cherry: '#ff3366',
+		jetBlack: '#050002'
 	}
 };
 

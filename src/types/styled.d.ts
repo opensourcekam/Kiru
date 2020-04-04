@@ -16,6 +16,7 @@ declare module 'styled-components' {
 			disabledColor: string;
 			weakerTxt: string;
 			cherry: string;
+			jetBlack: string;
 		};
 	}
 }
