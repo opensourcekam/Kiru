@@ -121,6 +121,7 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 						}
 
 						setPoem(Object.values(values).join('\n\n'));
+						window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 					}}
 					render={() => (
 						<Form>
@@ -181,7 +182,6 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 							onClick={() => {
 								toastManager.add('Copied successfully', { appearance: 'success' });
 								copy(poem);
-								window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 							}}
 						>
 							<FeatherIcon icon="share" /> Copy
