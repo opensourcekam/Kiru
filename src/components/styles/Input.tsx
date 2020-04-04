@@ -16,9 +16,9 @@ export const inputStyles = css`
 	padding: 26.5px 8px;
 `;
 
-const fiveSyllablesInputStyle = css`min-width: 55%;`;
+const fiveSyllablesInputStyle = css`min-width: 70%;`;
 
-const sevenSyllablesInputStyle = css`min-width: 80%;`;
+const sevenSyllablesInputStyle = css`min-width: 90%;`;
 
 export const Inputs = styled.div.attrs({
 	className: 'inputs'
