@@ -9,7 +9,8 @@
 /coverage
 
 # production
-# /build
+/build
+deploy.tar
 
 # misc
 .DS_Store
