@@ -1,15 +1,24 @@
 import * as React from 'react';
 import * as Yup from 'yup';
 import * as syllable from 'syllable';
+import Reward from 'react-rewards';
 import nlp from 'compromise';
 import nlpSyllables from 'compromise-syllables';
 import styled from 'styled-components';
+import FeatherIcon from 'feather-icons-react';
+import transition from 'styled-transition-group';
+import { withToastManager } from 'react-toast-notifications';
+import copy from 'copy-to-clipboard';
 import { Formik, Form, Field, FieldProps, ErrorMessage } from 'formik';
 
-import { Inputs, Input } from '../components/styles/Input';
+import { Inputs, Input, TextArea } from '../components/styles/Input';
+import { Button, Buttons } from '../components/styles/Button';
 import { Container } from '../components/styles/Container';
+import { fadeIn, fadeOut } from '../components/styles/Keyframes';
 
-interface IHomeProps {}
+interface IHomeProps {
+	toastManager: any;
+}
 
 nlp.extend(nlpSyllables);
 
@@ -65,7 +74,20 @@ const HaikuValidationSchema = Yup.object().shape({
 });
 
 const InputContainer = styled.div`margin-bottom: 2rem;`;
-const CenteredContainer = styled.div`margin-top: 6rem;`;
+const CenteredContainer = styled.div`
+	margin-top: 2rem;
+	padding: 2rem 0;
+`;
+
+const Transition = transition.div`
+	&:enter {
+		animation: ${fadeIn} 1s forwards;
+	}
+
+	&:exit {
+			animation: ${fadeOut} 1s forwards;
+	}
+`;
 
 interface Variables {
 	lineOne: String;
@@ -73,7 +95,14 @@ interface Variables {
 	lineThree: String;
 }
 
-const Home: React.FunctionComponent<IHomeProps> = () => {
+const _Home: React.FunctionComponent<IHomeProps> = (props) => {
+	const { toastManager } = props;
+	const [ poem, setPoem ] = React.useState('');
+	const reward = React.useRef<{
+		rewardMe: () => void;
+		punishMe: () => void;
+	}>(null);
+
 	return (
 		<Container>
 			<CenteredContainer>
@@ -86,45 +115,86 @@ const Home: React.FunctionComponent<IHomeProps> = () => {
 				<Formik
 					initialValues={{ lineOne: '', lineTwo: '', lineThree: '' }}
 					validationSchema={HaikuValidationSchema}
-					onSubmit={() => {}}
+					onSubmit={(values: Variables) => {
+						if (reward && reward.current) {
+							reward.current.rewardMe();
+						}
+
+						setPoem(Object.values(values).join('\n\n'));
+					}}
 					render={() => (
 						<Form>
-							<Inputs stack={true}>
-								<Field
-									name="lineOne"
-									render={({ field }: FieldProps<Variables>) => (
-										<InputContainer>
-											<Input className="five-syllables" name="lineOne" {...field} />
-											<ErrorMessage name="lineOne" component="div" className="field-error" />
-											{/* <pre>{JSON.stringify(createSyllableTracker(field.value, 5), null, 4)}</pre> */}
-										</InputContainer>
-									)}
-								/>
-								<Field
-									name="lineTwo"
-									render={({ field }: FieldProps<Variables>) => (
-										<InputContainer>
-											<Input className="seven-syllables" {...field} />
-											<ErrorMessage name="lineTwo" component="div" className="field-error" />
-										</InputContainer>
-									)}
-								/>
-								<Field
-									name="lineThree"
-									render={({ field }: FieldProps<Variables>) => (
-										<InputContainer>
-											<Input className="five-syllables" {...field} />
-											<ErrorMessage name="lineThree" component="div" className="field-error" />
-										</InputContainer>
-									)}
-								/>
-							</Inputs>
+							<Reward ref={reward} type="confetti">
+								<Inputs stack={true}>
+									<Field
+										name="lineOne"
+										render={({ field }: FieldProps<Variables>) => (
+											<InputContainer>
+												<Input className="five-syllables" name="lineOne" {...field} />
+												<ErrorMessage name="lineOne" component="div" className="field-error" />
+												{/* <pre>{JSON.stringify(createSyllableTracker(field.value, 5), null, 4)}</pre> */}
+											</InputContainer>
+										)}
+									/>
+									<Field
+										name="lineTwo"
+										render={({ field }: FieldProps<Variables>) => (
+											<InputContainer>
+												<Input className="seven-syllables" {...field} />
+												<ErrorMessage name="lineTwo" component="div" className="field-error" />
+											</InputContainer>
+										)}
+									/>
+									<Field
+										name="lineThree"
+										render={({ field }: FieldProps<Variables>) => (
+											<InputContainer>
+												<Input className="five-syllables" {...field} />
+												<ErrorMessage
+													name="lineThree"
+													component="div"
+													className="field-error"
+												/>
+											</InputContainer>
+										)}
+									/>
+								</Inputs>
+
+								<Buttons stretch={true}>
+									<Button type="submit">
+										<FeatherIcon icon="arrow-right" /> Check my poem
+									</Button>
+								</Buttons>
+							</Reward>
 						</Form>
 					)}
 				/>
 			</CenteredContainer>
+			{poem && (
+				<Transition in={!!poem} timeout={350}>
+					<Inputs stack={true}>
+						<TextArea readOnly value={poem} rows={5} />
+					</Inputs>
+					<Buttons stretch={true}>
+						{/* <Button>
+							<FeatherIcon icon="copy" /> Copy
+						</Button> */}
+						<Button
+							secondary={true}
+							onClick={() => {
+								toastManager.add('Copied successfully', { appearance: 'success' });
+								copy(poem);
+							}}
+						>
+							<FeatherIcon icon="share" /> Copy
+						</Button>
+					</Buttons>
+				</Transition>
+			)}
 		</Container>
 	);
 };
+
+const Home = withToastManager(_Home);
 
 export { Home };

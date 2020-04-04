@@ -6,6 +6,7 @@ interface IButtonProps {
 export interface IInputProps extends IButtonProps {
 	readonly stack?: boolean;
 	readonly stretch?: boolean;
+	readonly secondary?: boolean;
 }
 
 const buttonStyles = css`
@@ -54,6 +55,7 @@ export const Buttons =
 	button {
 		display: ${(props) => (props.stack ? 'block' : 'inline-block')};
 		min-width: ${(props) => (props.stretch ? '100%' : 'none')};
+		margin: 1rem 0;
 	}
 `;
 
@@ -63,7 +65,8 @@ export const Button =
 	`
 	${buttonStyles};
 	${shadowStyles};
-	background-color: ${(props) => props.theme.colors.primaryColor};
+	background-color: ${(props) =>
+		!props.secondary ? props.theme.colors.primaryColor : props.theme.colors.secondaryColor};
 	color: ${(props) => props.theme.colors.fgColor};
 	font-size: ${(props) => (props.size === 'small' ? 0.7 : 0.9)}rem;
 	min-width: ${(props) => (props.size === 'small' ? 125 : 225)}px;

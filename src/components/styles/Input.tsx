@@ -71,6 +71,8 @@ export const Input = styled.input`
 export const TextArea = styled.textarea`
 	${inputStyles};
 	resize: none;
+	width: 100%;
+	font-family: Georgia;
 	border: 1.5px solid ${(props) => props.theme.colors.disabledBg};
 	&::-webkit-scrollbar {
 		width: 0;
