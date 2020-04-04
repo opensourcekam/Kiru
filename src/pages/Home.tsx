@@ -184,7 +184,7 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 								copy(poem);
 							}}
 						>
-							<FeatherIcon icon="share" /> Copy
+							<FeatherIcon icon="copy" /> Copy
 						</Button>
 					</Buttons>
 				</Transition>
