@@ -1,6 +1,7 @@
 import { DefaultTheme } from 'styled-components';
 
 const theme: DefaultTheme = {
+	darkMode: true,
 	colors: {
 		primaryColor: '#6927ff',
 		secondaryColor: '#837dff',

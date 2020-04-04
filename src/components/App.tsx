@@ -7,19 +7,23 @@ import { theme } from './styles/theme';
 import { Routes } from '../routes/Routes';
 import { client } from '../api/apollo';
 
-class App extends Component {
-	public render() {
-		return (
-			<ToastProvider placement="bottom-left">
-				<ThemeProvider theme={theme}>
-					<ApolloProvider client={client}>
+export const DarkMode = React.createContext({ darkMode: false, toggleDarkMode: (): void => {} });
+
+const App = () => {
+	const [ darkMode, setDarkMode ] = React.useState(false);
+
+	return (
+		<ToastProvider placement="bottom-left">
+			<ThemeProvider theme={theme}>
+				<ApolloProvider client={client}>
+					<DarkMode.Provider value={{ darkMode, toggleDarkMode: () => setDarkMode((x) => !x) }}>
 						<Routes />
-					</ApolloProvider>
-				</ThemeProvider>
-				<GlobalStyle theme={theme} />
-			</ToastProvider>
-		);
-	}
-}
+					</DarkMode.Provider>
+				</ApolloProvider>
+			</ThemeProvider>
+			<GlobalStyle theme={theme} darkMode={darkMode} />
+		</ToastProvider>
+	);
+};
 
 export default App;

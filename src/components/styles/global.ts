@@ -1,9 +1,14 @@
 import { createGlobalStyle } from 'styled-components';
 import { fadeIn, fadeOut, shake } from '../styles/Keyframes';
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle =
+	createGlobalStyle <
+	{ darkMode: boolean } >
+	`
     html {
         box-sizing: border-box;
+        transition : -webkit-filter 200ms ease-in-out;
+        filter: ${(props) => (props.darkMode ? 'invert(100%)' : 'none')};
     }
 
     *,
@@ -20,7 +25,7 @@ export const GlobalStyle = createGlobalStyle`
         /* @import url('//fonts.googleapis.com/css?family=Poppins:300,400,700'); */
         /* BROKEN IN PRODUCTION FOR NOW */
         font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-        background-color: ${(props) => props.theme.colors.bgColor};
+        background-color: ${(props) => (!props.darkMode ? props.theme.colors.bgColor : props.theme.colors.primaryText)};
         overflow-x: hidden;
         margin: 0;
     }
