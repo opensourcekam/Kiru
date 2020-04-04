@@ -65,10 +65,7 @@ const HaikuValidationSchema = Yup.object().shape({
 });
 
 const InputContainer = styled.div`margin-bottom: 2rem;`;
-const CenteredContainer = styled.div`
-	padding: 3rem;
-	margin-top: 6rem;
-`;
+const CenteredContainer = styled.div`margin-top: 6rem;`;
 
 interface Variables {
 	lineOne: String;
