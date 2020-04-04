@@ -13,11 +13,37 @@ interface IHomeProps {}
 
 nlp.extend(nlpSyllables);
 
-const isFiveSyllables = (value: string): boolean => {
-	console.log(nlp(value).syllables());
-	return true;
+const createSyllableTracker = (
+	value: string,
+	maxSyllables: number
+): { syllables: string[]; count: number; valid: boolean } => {
+	const doc = nlp(value)
+		// @ts-ignore
+		.syllables();
+
+	if (doc.length >= 1) {
+		const [ syllables ] = doc.map((t: any) => t.syllables);
+
+		return {
+			syllables,
+			count: syllables.length,
+			valid: syllables.length === maxSyllables
+		};
+	}
+
+	return {
+		syllables: [],
+		valid: false,
+		count: 0
+	};
 };
-const isSevenSyllables = (value: string): boolean => syllable(value) === 7;
+
+const createSimpleSyllableTracker = (value: string, max: number) => {
+	return syllable(value) === max;
+};
+
+const isFiveSyllables = (value: string): boolean => createSimpleSyllableTracker(value, 5);
+const isSevenSyllables = (value: string): boolean => createSimpleSyllableTracker(value, 7);
 
 const baseMessage = 'Try again this is not quite';
 const hasFiveSyllables = Yup.mixed().test({
@@ -73,6 +99,7 @@ const Home: React.FunctionComponent<IHomeProps> = () => {
 										<InputContainer>
 											<Input className="five-syllables" name="lineOne" {...field} />
 											<ErrorMessage name="lineOne" component="div" className="field-error" />
+											{/* <pre>{JSON.stringify(createSyllableTracker(field.value, 5), null, 4)}</pre> */}
 										</InputContainer>
 									)}
 								/>
