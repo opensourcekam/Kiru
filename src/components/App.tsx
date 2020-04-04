@@ -7,10 +7,12 @@ import { theme } from './styles/theme';
 import { Routes } from '../routes/Routes';
 import { client } from '../api/apollo';
 
-export const DarkMode = React.createContext({ darkMode: false, toggleDarkMode: (): void => {} });
+const IS_LIGHT_BY_DEFAULT = true;
+
+export const DarkMode = React.createContext({ darkMode: IS_LIGHT_BY_DEFAULT, toggleDarkMode: (): void => {} });
 
 const App = () => {
-	const [ darkMode, setDarkMode ] = React.useState(false);
+	const [ darkMode, setDarkMode ] = React.useState(IS_LIGHT_BY_DEFAULT);
 
 	return (
 		<ToastProvider placement="bottom-left">
