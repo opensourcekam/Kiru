@@ -81,8 +81,9 @@ export const GlobalStyle =
 		animation: ${fadeOut} 500ms ease-out;
 	}
     .field-error {
-        color: ${(props) => props.theme.colors.primaryColor};   
+        color: ${(props) => props.theme.colors.secondaryColor};   
         animation: ${fadeIn} 750ms ease-out, ${fadeIn} 1000ms ease-in;
         font-size: 0.9rem;
+        margin-left: 3.5rem;
     }
 `;

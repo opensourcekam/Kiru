@@ -5,6 +5,7 @@ const theme: DefaultTheme = {
 	colors: {
 		primaryColor: '#6927ff',
 		secondaryColor: '#837dff',
+		fresh: '#6DDDD4',
 		primaryText: '#323232',
 		secondaryText: '#9e9e9e',
 		fgColor: '#E5F3F3',

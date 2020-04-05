@@ -17,6 +17,7 @@ declare module 'styled-components' {
 			weakerTxt: string;
 			cherry: string;
 			jetBlack: string;
+			fresh: string;
 		};
 	}
 }

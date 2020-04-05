@@ -4,7 +4,7 @@ import * as syllable from 'syllable';
 import Reward from 'react-rewards';
 import nlp from 'compromise';
 import nlpSyllables from 'compromise-syllables';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import FeatherIcon from 'feather-icons-react';
 import transition from 'styled-transition-group';
 import { withToastManager } from 'react-toast-notifications';
@@ -16,6 +16,8 @@ import { Button, Buttons } from '../components/styles/Button';
 import { Container } from '../components/styles/Container';
 import { fadeIn, fadeOut } from '../components/styles/Keyframes';
 
+// https://mariusschulz.com/blog/keyof-and-lookup-types-in-typescript
+type ColorKeys = keyof DefaultTheme['colors'];
 interface IHomeProps {
 	toastManager: any;
 }
@@ -73,7 +75,12 @@ const HaikuValidationSchema = Yup.object().shape({
 	lineThree: hasFiveSyllables
 });
 
-const InputContainer = styled.div`margin-bottom: 2rem;`;
+const InputContainer = styled.div`
+	margin-bottom: 2rem;
+	.field-error {
+		margin-top: 0.5rem;
+	}
+`;
 const CenteredContainer = styled.div`
 	margin-top: 2rem;
 	padding: 2rem 0;
@@ -87,6 +94,18 @@ const Transition = transition.div`
 	&:exit {
 			animation: ${fadeOut} 1s forwards;
 	}
+`;
+const FlexContainer = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const SyllableText = styled.span`
+	font-weight: 700;
+	font-size: 2.5rem;
+	margin-right: 2rem;
+	color: ${(props: { color: ColorKeys; theme: DefaultTheme }) =>
+		props.theme.colors[props.color || props.theme.colors.weakerTxt]};
 `;
 
 interface Variables {
@@ -129,28 +148,60 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 								<Inputs stack={true}>
 									<Field
 										name="lineOne"
-										render={({ field }: FieldProps<Variables>) => (
-											<InputContainer>
-												<Input className="five-syllables" name="lineOne" {...field} />
-												<ErrorMessage name="lineOne" component="div" className="field-error" />
-												{/* <pre>{JSON.stringify(createSyllableTracker(field.value, 5), null, 4)}</pre> */}
-											</InputContainer>
-										)}
+										render={({ field, form }: FieldProps<Variables>) => {
+											const lineOneSyllableCount = syllable(field.value);
+
+											return (
+												<InputContainer>
+													<FlexContainer>
+														<SyllableText
+															color={
+																isFiveSyllables(field.value) ? 'fresh' : 'disabledColor'
+															}
+														>
+															{lineOneSyllableCount}
+														</SyllableText>
+														<Input className="five-syllables" name="lineOne" {...field} />
+													</FlexContainer>
+													<ErrorMessage
+														name="lineOne"
+														component="div"
+														className="field-error"
+													/>
+												</InputContainer>
+											);
+										}}
 									/>
 									<Field
 										name="lineTwo"
-										render={({ field }: FieldProps<Variables>) => (
+										render={({ field, form }: FieldProps<Variables>) => (
 											<InputContainer>
-												<Input className="seven-syllables" {...field} />
+												<FlexContainer>
+													<SyllableText
+														color={
+															isSevenSyllables(field.value) ? 'fresh' : 'disabledColor'
+														}
+													>
+														{syllable(field.value)}
+													</SyllableText>
+													<Input className="seven-syllables" {...field} />
+												</FlexContainer>
 												<ErrorMessage name="lineTwo" component="div" className="field-error" />
 											</InputContainer>
 										)}
 									/>
 									<Field
 										name="lineThree"
-										render={({ field }: FieldProps<Variables>) => (
+										render={({ field, form }: FieldProps<Variables>) => (
 											<InputContainer>
-												<Input className="five-syllables" {...field} />
+												<FlexContainer>
+													<SyllableText
+														color={isFiveSyllables(field.value) ? 'fresh' : 'disabledColor'}
+													>
+														{syllable(field.value)}
+													</SyllableText>
+													<Input className="five-syllables" {...field} />
+												</FlexContainer>
 												<ErrorMessage
 													name="lineThree"
 													component="div"
