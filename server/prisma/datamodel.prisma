@@ -1,0 +1,155 @@
+# scalar Json
+# @relation(link: INLINE)
+enum Status {
+	DRAFT
+	PUBLISHED
+	ARCHIVED
+}
+
+enum Locale {
+	EN
+}
+
+type File {
+	id: ID! @id
+	secret: String! @unique
+	url: String! @unique
+	public_id: String!
+	name: String!
+	size: Int!
+	width: Int
+	height: Int
+	resource_type: String
+	contentType: String!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+	influencer: Influencer!
+	mediaKit: [MediaKit!]!
+}
+
+type Location {
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	id: ID! @id
+	name: String
+	geo: Geo @relation(link: INLINE)
+	influencer: Influencer
+}
+
+type Geo {
+	lat: Float
+	lng: Float
+	id: ID! @id
+	location: Location
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+}
+
+type Influencer {
+	id: ID! @id
+	email: String! @unique
+	handle: String @unique
+	avatar: String
+	name: String
+	bio: String
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	password: String!
+	verified: Boolean
+	specialty: String
+	location: Location @relation(link: INLINE)
+	mediaKit: [MediaKit!]! @relation(link: TABLE)
+	files: [File!]! @relation(link: TABLE)
+	social: Social @relation(link: INLINE)
+}
+
+type MediaKit {
+	id: ID! @id
+	influencer: Influencer
+	files: [File!]! @relation(link: TABLE)
+	interests: [Interest!]! @relation(link: TABLE)
+	status: Status! @default(value: DRAFT)
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+}
+
+type Interest {
+	id: ID! @id
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	tag: String
+	influencer: Influencer
+}
+
+type Jobs {
+	id: ID! @id
+	status: Status! @default(value: DRAFT)
+	company: Company @relation(link: INLINE)
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	cost: String
+	accepted: Boolean
+}
+
+type Social {
+	id: ID! @id
+	status: Status! @relation(link: INLINE)
+	instagram: Instagram @relation(link: INLINE)
+	youtube: Youtube @relation(link: INLINE)
+	twitter: Twitter @relation(link: INLINE)
+	influencer: Influencer
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+}
+
+type Instagram {
+	id: ID! @id
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	handle: String
+	followers: Int
+	analytics: Json
+	link: String
+}
+
+type Twitter {
+	id: ID! @id
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	analytics: Json
+	followers: Int
+	handle: String
+	link: String
+}
+
+type Youtube {
+	id: ID! @id
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	followers: Int
+	analytics: Json
+	handle: String
+	link: String
+}
+
+type Feedback {
+	id: ID! @id
+	status: Status! @default(value: DRAFT)
+	influencer: Influencer
+	company: Company
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	comment: String
+}
+
+type Company {
+	id: ID! @id
+	status: Status! @default(value: DRAFT)
+	hires: Influencer
+	jobs: [Jobs!]!
+	feedback: Feedback @relation(link: INLINE)
+	updatedAt: DateTime! @updatedAt
+	createdAt: DateTime! @createdAt
+	name: String
+	location: Json
+}
