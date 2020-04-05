@@ -1,0 +1,60 @@
+{
+	"name": "kiru",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"apollo-boost": "^0.3.1",
+		"compromise": "^13.1.1",
+		"compromise-syllables": "^0.0.4",
+		"copy-to-clipboard": "^3.3.1",
+		"feather-icons-react": "^0.3.1",
+		"formik": "^1.5.2",
+		"graphql": "^14.2.1",
+		"lodash": "^4.17.11",
+		"react": "^16.8.6",
+		"react-apollo": "^2.5.5",
+		"react-dom": "^16.8.6",
+		"react-dropzone": "^10.1.4",
+		"react-rewards": "^1.0.7",
+		"react-router-dom": "^5.0.0",
+		"react-scripts": "2.1.8",
+		"react-select": "^2.4.3",
+		"react-toast-notifications": "^1.4.0",
+		"react-transition-group": "^4.0.0",
+		"styled-components": "^4.2.0",
+		"styled-transition-group": "^2.0.0",
+		"syllable": "^4.0.1",
+		"typescript": "3.4.4",
+		"yup": "^0.27.0"
+	},
+	"devDependencies": {
+		"@types/graphql": "^14.2.0",
+		"@types/lodash": "^4.14.123",
+		"@types/react": "^16.8.14",
+		"@types/react-dom": "^16.8.4",
+		"@types/react-dropzone": "^4.2.2",
+		"@types/react-router-dom": "^4.3.2",
+		"@types/react-select": "^2.0.17",
+		"@types/react-toast-notifications": "^2.4.0",
+		"@types/react-transition-group": "^2.9.0",
+		"@types/styled-components": "^4.1.14",
+		"@types/yup": "^0.26.12",
+		"babel-plugin-styled-components": "^1.10.7",
+		"dotenv-cli": "^2.0.0"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "dotenv -e .env.production.local react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	]
+}
