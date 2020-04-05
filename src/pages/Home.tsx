@@ -21,6 +21,11 @@ type ColorKeys = keyof DefaultTheme['colors'];
 interface IHomeProps {
 	toastManager: any;
 }
+interface ISyllables {
+	isValid: boolean;
+	syllables: number;
+	max: number;
+}
 
 nlp.extend(nlpSyllables);
 
@@ -49,23 +54,27 @@ const createSyllableTracker = (
 	};
 };
 
-const createSimpleSyllableTracker = (value: string, max: number) => {
-	return syllable(value) === max;
+const createSimpleSyllableTracker = (value: string, max: number): ISyllables => {
+	const syllables = syllable(value);
+	return {
+		isValid: syllables === max,
+		syllables,
+		max
+	};
 };
-
-const isFiveSyllables = (value: string): boolean => createSimpleSyllableTracker(value, 5);
-const isSevenSyllables = (value: string): boolean => createSimpleSyllableTracker(value, 7);
+const isFiveSyllables = (value: string): ISyllables => createSimpleSyllableTracker(value, 5);
+const isSevenSyllables = (value: string): ISyllables => createSimpleSyllableTracker(value, 7);
 
 const baseMessage = 'Try again this is not quite';
 const hasFiveSyllables = Yup.mixed().test({
 	name: 'hasFiveSyllables',
-	test: isFiveSyllables,
+	test: (args) => isFiveSyllables(args).isValid,
 	message: `${baseMessage} five syllables`
 });
 
 const hasSevenSyllables = Yup.mixed().test({
 	name: 'hasFiveSyllables',
-	test: isSevenSyllables,
+	test: (args) => isSevenSyllables(args).isValid,
 	message: `${baseMessage} seven syllables`
 });
 
@@ -114,6 +123,25 @@ interface Variables {
 	lineThree: String;
 }
 
+/**
+ * 
+ * 
+ * syllableCount, needle
+ * if syllableCount === needle => 'fresh'
+ * elif syllableCount > needle => 'red'
+ * return 'greyish'
+*/
+
+const getSyllableTextColor = (count: number, max: number): ColorKeys => {
+	if (count === max) {
+		return 'fresh';
+	} else if (count > max) {
+		return 'cherry';
+	}
+
+	return 'disabledColor';
+};
+
 const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 	const { toastManager } = props;
 	const [ poem, setPoem ] = React.useState('');
@@ -148,18 +176,14 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 								<Inputs stack={true}>
 									<Field
 										name="lineOne"
-										render={({ field, form }: FieldProps<Variables>) => {
-											const lineOneSyllableCount = syllable(field.value);
+										render={({ field }: FieldProps<Variables>) => {
+											const { syllables, max } = isFiveSyllables(field.value);
 
 											return (
 												<InputContainer>
 													<FlexContainer>
-														<SyllableText
-															color={
-																isFiveSyllables(field.value) ? 'fresh' : 'disabledColor'
-															}
-														>
-															{lineOneSyllableCount}
+														<SyllableText color={getSyllableTextColor(syllables, max)}>
+															{syllables}
 														</SyllableText>
 														<Input className="five-syllables" name="lineOne" {...field} />
 													</FlexContainer>
@@ -174,41 +198,46 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 									/>
 									<Field
 										name="lineTwo"
-										render={({ field, form }: FieldProps<Variables>) => (
-											<InputContainer>
-												<FlexContainer>
-													<SyllableText
-														color={
-															isSevenSyllables(field.value) ? 'fresh' : 'disabledColor'
-														}
-													>
-														{syllable(field.value)}
-													</SyllableText>
-													<Input className="seven-syllables" {...field} />
-												</FlexContainer>
-												<ErrorMessage name="lineTwo" component="div" className="field-error" />
-											</InputContainer>
-										)}
+										render={({ field }: FieldProps<Variables>) => {
+											const { syllables, max } = isSevenSyllables(field.value);
+											return (
+												<InputContainer>
+													<FlexContainer>
+														<SyllableText color={getSyllableTextColor(syllables, max)}>
+															{syllables}
+														</SyllableText>
+														<Input className="seven-syllables" {...field} />
+													</FlexContainer>
+													<ErrorMessage
+														name="lineTwo"
+														component="div"
+														className="field-error"
+													/>
+												</InputContainer>
+											);
+										}}
 									/>
 									<Field
 										name="lineThree"
-										render={({ field, form }: FieldProps<Variables>) => (
-											<InputContainer>
-												<FlexContainer>
-													<SyllableText
-														color={isFiveSyllables(field.value) ? 'fresh' : 'disabledColor'}
-													>
-														{syllable(field.value)}
-													</SyllableText>
-													<Input className="five-syllables" {...field} />
-												</FlexContainer>
-												<ErrorMessage
-													name="lineThree"
-													component="div"
-													className="field-error"
-												/>
-											</InputContainer>
-										)}
+										render={({ field }: FieldProps<Variables>) => {
+											const { syllables, max } = isFiveSyllables(field.value);
+
+											return (
+												<InputContainer>
+													<FlexContainer>
+														<SyllableText color={getSyllableTextColor(syllables, max)}>
+															{syllables}
+														</SyllableText>
+														<Input className="five-syllables" {...field} />
+													</FlexContainer>
+													<ErrorMessage
+														name="lineThree"
+														component="div"
+														className="field-error"
+													/>
+												</InputContainer>
+											);
+										}}
 									/>
 								</Inputs>
 
@@ -229,7 +258,6 @@ const _Home: React.FunctionComponent<IHomeProps> = (props) => {
 					</Inputs>
 					<Buttons stretch={true}>
 						<Button
-							secondary={true}
 							onClick={() => {
 								toastManager.add('Copied successfully', { appearance: 'success' });
 								copy(poem);
