@@ -7,8 +7,8 @@
     "COPY ./package.json /usr/src/app/",
     "RUN npm cache clean --force",
     "RUN npm install",
-    "RUN npm run build",
     "COPY ./src /usr/src/app",
+    "RUN npm run build",
     "ENV PORT 80",
     "EXPOSE 80",
     "CMD [ \"npm\", \"run\", \"start\" ]"
