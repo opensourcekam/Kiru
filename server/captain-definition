@@ -10,7 +10,8 @@
     "COPY ./src /usr/src/app",
     "ENV PORT 80",
     "EXPOSE 80",
-    "RUN (cd /usr/src/app && npm run build)",
+    "RUN ls -al",
+    "RUN npm run build",
     "CMD [ \"npm\", \"run\", \"start\" ]"
   ]
 }
