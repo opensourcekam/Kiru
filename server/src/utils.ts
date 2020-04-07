@@ -1,20 +1,13 @@
-import * as types from './types';
-import { userSessionIdPrefix, redisSessionPrefix } from './constants';
+import { Context } from './context';
+import { userSessionIdPrefix, redisSessionPrefix } from './constants/index';
 
-export const isProduction = process.env.NODE_ENV != 'DEV';
-
-export const getUserId = (ctx: types.Context): string => {
+export const getUserId = (ctx: Context): string | undefined => {
 	const { userId } = ctx.session;
+
 	if (userId) {
 		return userId;
 	}
 };
-
-export class AuthError extends Error {
-	constructor() {
-		super('Not authorized');
-	}
-}
 
 export const removeAllUsersSessions = async (userId: string, redis: any) => {
 	const sessionIds = await redis.lrange(`${userSessionIdPrefix}${userId}`, 0, -1);
