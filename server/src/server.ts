@@ -19,4 +19,4 @@ server.express.use(secureWithHeaders);
 server.express.use('/', serveClientBuild);
 server.express.get('*', directAllTraffic);
 
-server.start(serverOptions, () => console.log(`🚀 Server ready at: http://localhost:4000\n`));
+server.start(serverOptions, (s) => console.log(`🚀 Server ready`, JSON.stringify(s, null, 4)));
