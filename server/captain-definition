@@ -4,6 +4,7 @@
     "FROM library/node:erbium",
     "RUN mkdir -p /usr/src/app",
     "WORKDIR /usr/src",
+    "RUN ls -al",
     "COPY ./package.json /usr/src",
     "COPY ./tsconfig.json /usr/src",
     "COPY ./schema.graphql /usr/src",
