@@ -19,4 +19,6 @@ server.express.use(secureWithHeaders);
 server.express.use('/', serveClientBuild);
 server.express.get('*', directAllTraffic);
 
-server.start(serverOptions, (s) => console.log(`🚀 Server ready`, JSON.stringify(s, null, 4)));
+server.start(serverOptions, (s) =>
+	console.log(`🚀 Server ready`, JSON.stringify(s, null, 4), console.log(process.env))
+);
