@@ -3,8 +3,9 @@
   "dockerfileLines": [
     "FROM library/node:8.9.4-alpine",
     "WORKDIR /usr/src/app",
+    "RUN mkdir -p /usr/src/client",
     "COPY ./server/* /usr/src/app/",
-    "COPY ./client /usr/src/app/",
+    "COPY ./client /usr/src/client",
     "RUN ls -al",
     "RUN npm cache clean --force",
     "RUN npm install",
