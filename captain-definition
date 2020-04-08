@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "dockerfileLines": [
+    "FROM library/node:8.9.4-alpine",
+    "RUN mkdir -p /usr/src/app/server",
+    "WORKDIR /usr/src/app",
+    "RUN ls -al",
+    "COPY ./server/package.json /usr/src/app/server",
+    "COPY ./server/tsconfig.json /usr/src/app/server",
+    "COPY ./server/schema.graphql /usr/src/app/server",
+    "COPY ./server/.env.example /usr/src/app/server",
+    "COPY ./server/prisma /usr/src/app/server",
+    "COPY ./server/src /usr/src/app/server",
+    "RUN cd server",
+    "RUN npm cache clean --force",
+    "RUN npm install",
+    "RUN npm run build",
+    "RUN cd ..",
+    "RUN mkdir -p /usr/src/app/client",
+    "COPY ./client /usr/src/app/client",
+    "RUN cd client",
+    "RUN npm cache clean --force",
+    "RUN npm install",
+    "RUN npm run build",
+    "RUN cd ../server",
+    "ENV PORT 80",
+    "EXPOSE 80",
+    "RUN ls -al",
+    "CMD [ \"npm\", \"run\", \"start\" ]"
+  ]
+}
