@@ -1,5 +1,5 @@
 {
-	"name": "project-starter",
+	"name": "kiru-server",
 	"license": "MIT",
 	"scripts": {
 		"start": "node dist/server",

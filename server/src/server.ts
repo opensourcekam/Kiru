@@ -21,4 +21,5 @@ server.express.use(secureWithHeaders);
 server.express.use('/', serveClientBuild);
 server.express.get('*', directAllTraffic);
 
+server.express.listen(serverOptions.port, '0.0.0.0');
 server.start(serverOptions, (s) => console.log(`🚀 Server ready`, JSON.stringify(s, null, 4)));

@@ -3,7 +3,7 @@ import { join } from 'path';
 import { static as expressStatic, Request, Response, NextFunction } from 'express';
 
 export const serverOptions = {
-	port: 3000,
+	port: 3333,
 	endpoint: '/graphql',
 	subscriptions: '/subscriptions',
 	playground: '/playground',
