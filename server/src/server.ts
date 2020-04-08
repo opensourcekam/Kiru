@@ -1,5 +1,6 @@
 require('dotenv-safe').config();
 import { GraphQLServer } from 'graphql-yoga';
+import * as morgan from 'morgan';
 
 import { permissions } from './permissions';
 import { schema } from './schema';
@@ -13,6 +14,7 @@ const server = new GraphQLServer({
 	middlewares: [ permissions ]
 });
 
+server.express.use(morgan('tiny'));
 server.express.use(redisSession);
 server.express.use(redisRateLimit);
 server.express.use(secureWithHeaders);
