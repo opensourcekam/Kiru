@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "dockerfileLines": [
-    "FROM library/node:8.9.4-alpine",
+    "FROM library/node:erbium",
     "WORKDIR /usr/src/app",
     "RUN mkdir -p /usr/src/client",
     "COPY ./server/* /usr/src/app/",
