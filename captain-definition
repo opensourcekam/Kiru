@@ -5,6 +5,7 @@
     "WORKDIR /usr/src/app",
     "COPY ./server/* /usr/src/app/",
     "COPY ./client/build /usr/src/app/",
+    "RUN ls -al",
     "RUN npm cache clean --force",
     "RUN npm install",
     "RUN npm run build",
