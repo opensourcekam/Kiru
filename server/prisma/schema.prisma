@@ -4,22 +4,69 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:nooneknows@localhost:3306/kiru"
 }
 
-model User {
-  email    String  @unique
-  id       Int     @default(autoincrement()) @id
-  name     String?
-  password String  @default("")
-  posts    Post[]
+model comments {
+  comment_body String?
+  id           Int     @id
+  rating       Int?
+  poems        poems   @relation(fields: [id], references: [id])
 }
 
-model Post {
-  authorId  Int?
-  content   String?
-  id        Int     @default(autoincrement()) @id
-  published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
+model haiku {
+  audio      String?
+  created_at String?
+  id         Int     @default(autoincrement()) @id
+  lineOne    String
+  lineThree  String
+  lineTwo    String
+  raw        String
+  url        String?
+  valid      Boolean
+  poems      poems   @relation(fields: [id], references: [id])
+}
+
+model poems {
+  created_at String?
+  id         Int         @default(autoincrement()) @id
+  type       poems_type?
+  user       user        @relation(fields: [id], references: [id])
+  comments   comments[]
+  haiku      haiku[]
+  rap        rap[]
+}
+
+model rap {
+  audio      String?
+  created_at String?
+  id         Int     @default(autoincrement()) @id
+  raw        String
+  poems      poems   @relation(fields: [id], references: [id])
+}
+
+model socials {
+  id        Int     @id
+  instagram String?
+  linkedin  String?
+  snapchat  String?
+  tiktok    String?
+  twitter   String?
+  user      user    @relation(fields: [id], references: [id])
+}
+
+model user {
+  created_at DateTime  @default(now())
+  firstName  String?
+  full_name  String?
+  id         Int       @default(autoincrement()) @id
+  lastName   String?
+  password   String?
+  poems      poems[]
+  socials    socials[]
+}
+
+enum poems_type {
+  HAIKU
+  RAP
 }
