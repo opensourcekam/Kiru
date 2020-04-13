@@ -1,27 +1,20 @@
-CREATE TABLE `user`
+CREATE TABLE `User`
 (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `firstName` varchar
 (255),
   `lastName` varchar
 (255),
+  `email` varchar
+(255) UNIQUE,
   `password` varchar
 (255),
-  `full_name` varchar
+  `name` varchar
 (255),
   `created_at` timestamp
 );
 
-CREATE TABLE `poems`
-(
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `type` enum
-('HAIKU','RAP'),
-  `created_at` varchar
-(255)
-);
-
-CREATE TABLE `haiku`
+CREATE TABLE `Haiku`
 (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `raw` longtext NOT NULL,
@@ -34,25 +27,28 @@ CREATE TABLE `haiku`
   `lineThree` varchar
 (255) NOT NULL,
   `valid` boolean NOT NULL,
+  `published` boolean NOT NULL,
   `audio` varchar
 (255),
   `created_at` varchar
 (255)
 );
 
-CREATE TABLE `rap`
+CREATE TABLE `Rap`
 (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `raw` longtext NOT NULL,
   `audio` varchar
 (255),
   `created_at` varchar
-(255)
+(255),
+  `published` boolean NOT NULL
 );
 
-CREATE TABLE `socials`
+CREATE TABLE `Social`
 (
   `id` int PRIMARY KEY,
+  `published` boolean NOT NULL,
   `instagram` varchar
 (255),
   `twitter` varchar
@@ -65,34 +61,34 @@ CREATE TABLE `socials`
 (255)
 );
 
-CREATE TABLE `comments`
+CREATE TABLE `Comments`
 (
   `id` integer PRIMARY KEY,
   `rating` tinyint,
   `comment_body` text
 );
 
-ALTER TABLE `poems`
+ALTER TABLE `Social`
 ADD FOREIGN KEY
-(`id`) REFERENCES `user`
+(`id`) REFERENCES `User`
 (`id`);
 
-ALTER TABLE `socials`
+ALTER TABLE `Haiku`
 ADD FOREIGN KEY
-(`id`) REFERENCES `user`
+(`id`) REFERENCES `User`
 (`id`);
 
-ALTER TABLE `haiku`
+ALTER TABLE `Rap`
 ADD FOREIGN KEY
-(`id`) REFERENCES `poems`
+(`id`) REFERENCES `User`
 (`id`);
 
-ALTER TABLE `rap`
+ALTER TABLE `Comments`
 ADD FOREIGN KEY
-(`id`) REFERENCES `poems`
+(`id`) REFERENCES `Haiku`
 (`id`);
 
-ALTER TABLE `comments`
+ALTER TABLE `Comments`
 ADD FOREIGN KEY
-(`id`) REFERENCES `poems`
+(`id`) REFERENCES `Rap`
 (`id`);

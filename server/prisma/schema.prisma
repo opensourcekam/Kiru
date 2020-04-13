@@ -7,66 +7,54 @@ datasource db {
   url      = "mysql://root:nooneknows@localhost:3306/kiru"
 }
 
-model comments {
-  comment_body String?
-  id           Int     @id
-  rating       Int?
-  poems        poems   @relation(fields: [id], references: [id])
+model Comments {
+  id     Int     @id
+  body   String?
+  rating Int?
+  post   Post    @relation(fields: [id], references: [id])
 }
 
-model haiku {
+model Post {
+  id         Int        @default(autoincrement()) @id
   audio      String?
+  content    String
   created_at String?
-  id         Int     @default(autoincrement()) @id
-  lineOne    String
-  lineThree  String
-  lineTwo    String
-  raw        String
+  lineOne    String?
+  lineThree  String?
+  lineTwo    String?
+  published  Boolean
+  title      String?
+  type       Post_type
   url        String?
-  valid      Boolean
-  poems      poems   @relation(fields: [id], references: [id])
+  valid      Boolean?
+  author     User       @relation(fields: [id], references: [id])
+  comments   Comments[]
 }
 
-model poems {
-  created_at String?
-  id         Int         @default(autoincrement()) @id
-  type       poems_type?
-  user       user        @relation(fields: [id], references: [id])
-  comments   comments[]
-  haiku      haiku[]
-  rap        rap[]
-}
-
-model rap {
-  audio      String?
-  created_at String?
-  id         Int     @default(autoincrement()) @id
-  raw        String
-  poems      poems   @relation(fields: [id], references: [id])
-}
-
-model socials {
+model Social {
   id        Int     @id
   instagram String?
   linkedin  String?
+  published Boolean
   snapchat  String?
   tiktok    String?
   twitter   String?
-  user      user    @relation(fields: [id], references: [id])
+  author    User    @relation(fields: [id], references: [id])
 }
 
-model user {
-  created_at DateTime  @default(now())
+model User {
+  created_at DateTime @default(now())
+  email      String?  @unique
   firstName  String?
-  full_name  String?
-  id         Int       @default(autoincrement()) @id
+  id         Int      @default(autoincrement()) @id
   lastName   String?
+  name       String?
   password   String?
-  poems      poems[]
-  socials    socials[]
+  posts      Post[]
+  social     Social[]
 }
 
-enum poems_type {
+enum Post_type {
   HAIKU
   RAP
 }
