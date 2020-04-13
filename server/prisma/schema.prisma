@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:nooneknows@localhost:3306/kiru"
+  url      = "srv-captain--kiru-db"
 }
 
 model Comments {
