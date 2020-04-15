@@ -7,7 +7,7 @@ datasource db {
   url      = "srv-captain--kiru-db:3306"
 }
 
-model Comments {
+model Comment {
   id     Int     @id
   body   String?
   rating Int?
@@ -15,7 +15,7 @@ model Comments {
 }
 
 model Post {
-  id         Int        @default(autoincrement()) @id
+  id         Int       @default(autoincrement()) @id
   audio      String?
   content    String
   created_at String?
@@ -27,8 +27,8 @@ model Post {
   type       Post_type
   url        String?
   valid      Boolean?
-  author     User       @relation(fields: [id], references: [id])
-  comments   Comments[]
+  author     User      @relation(fields: [id], references: [id])
+  comments   Comment[]
 }
 
 model Social {
