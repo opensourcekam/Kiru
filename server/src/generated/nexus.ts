@@ -20,6 +20,9 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  PostWhereUniqueInput: { // input type
+    id?: number | null; // Int
+  }
 }
 
 export interface NexusGenEnums {
@@ -42,6 +45,7 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  PostWhereUniqueInput: NexusGenInputs['PostWhereUniqueInput'];
 }
 
 export interface NexusGenFieldTypes {
@@ -58,11 +62,9 @@ export interface NexusGenFieldTypes {
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Post: { // field return type
-    author: NexusGenRootTypes['User'] | null; // User
-    content: string | null; // String
+    content: string; // String!
     id: number; // Int!
-    published: boolean; // Boolean!
-    title: string; // String!
+    title: string | null; // String
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -71,7 +73,7 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Post'] | null; // Post
   }
   User: { // field return type
-    email: string; // String!
+    email: string | null; // String
     id: number; // Int!
     name: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -81,8 +83,9 @@ export interface NexusGenFieldTypes {
 export interface NexusGenArgTypes {
   Mutation: {
     createDraft: { // args
-      content?: string | null; // String
+      content: string; // String!
       title: string; // String!
+      type?: string | null; // String
     }
     deletePost: { // args
       id: number; // Int!
@@ -108,6 +111,15 @@ export interface NexusGenArgTypes {
       id?: number | null; // Int
     }
   }
+  User: {
+    posts: { // args
+      after?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      before?: NexusGenInputs['PostWhereUniqueInput'] | null; // PostWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -117,7 +129,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Post" | "Query" | "User";
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = "PostWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 

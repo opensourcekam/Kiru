@@ -3,23 +3,58 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = "srv-captain--kiru-db:3306"
 }
 
-model User {
-  email    String  @unique
-  id       Int     @default(autoincrement()) @id
-  name     String?
-  password String  @default("")
-  posts    Post[]
+model Comment {
+  id     Int     @id
+  body   String?
+  rating Int?
+  post   Post    @relation(fields: [id], references: [id])
 }
 
 model Post {
-  authorId  Int?
-  content   String?
-  id        Int     @default(autoincrement()) @id
-  published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
+  id         Int       @default(autoincrement()) @id
+  audio      String?
+  content    String
+  created_at String?
+  lineOne    String?
+  lineThree  String?
+  lineTwo    String?
+  published  Boolean
+  title      String?
+  type       Post_type
+  url        String?
+  valid      Boolean?
+  author     User      @relation(fields: [id], references: [id])
+  comments   Comment[]
+}
+
+model Social {
+  id        Int     @id
+  instagram String?
+  linkedin  String?
+  published Boolean
+  snapchat  String?
+  tiktok    String?
+  twitter   String?
+  author    User    @relation(fields: [id], references: [id])
+}
+
+model User {
+  created_at DateTime @default(now())
+  email      String?  @unique
+  firstName  String?
+  id         Int      @default(autoincrement()) @id
+  lastName   String?
+  name       String?
+  password   String?
+  posts      Post[]
+  social     Social[]
+}
+
+enum Post_type {
+  HAIKU
+  RAP
 }

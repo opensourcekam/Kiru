@@ -1,5 +1,5 @@
 import { compare, hash } from 'bcryptjs';
-import { mutationType, stringArg, intArg } from 'nexus';
+import { mutationType, enumType, stringArg, intArg } from 'nexus';
 
 import { userSessionIdPrefix } from './../constants/index';
 import { removeAllUsersSessions, getUserId } from '../utils';
@@ -53,7 +53,7 @@ export const Mutation = mutationType({
 					throw new Error(`No user found for email: ${email}`);
 				}
 
-				const passwordValid = await compare(password, user.password);
+				const passwordValid = await compare(password, user.password!);
 				if (!passwordValid) {
 					throw new Error('Invalid password');
 				}
@@ -89,16 +89,18 @@ export const Mutation = mutationType({
 		t.field('createDraft', {
 			type: 'Post',
 			args: {
-				title: stringArg({ nullable: false }),
-				content: stringArg()
+				content: stringArg({ required: true }),
+				title: stringArg({ required: true }),
+				type: stringArg()
 			},
-			resolve: (parent, { title, content }, ctx) => {
+			resolve: (_parent, { content, title }, ctx) => {
 				const userId = getUserId(ctx);
 				if (!userId) throw new Error('Could not authenticate user.');
 				return ctx.prisma.post.create({
 					data: {
-						title,
-						content,
+						content: content!,
+						title: title,
+						type: 'RAP',
 						published: false,
 						author: { connect: { id: Number(userId) } }
 					}
